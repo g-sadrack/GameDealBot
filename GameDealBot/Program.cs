@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 
 public class Program
 {
@@ -10,12 +11,12 @@ public class Program
     {
         _client = new DiscordSocketClient();
 
-        var token = "SEU_TOKEN_AQUI";
+        var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
+        var token = config["Discord:Token"];
 
         _client.Log += Log;
 
         await _client.LoginAsync(TokenType.Bot, token);
-
         await _client.StartAsync();
 
         await Task.Delay(Timeout.Infinite);
